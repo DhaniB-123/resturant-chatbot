@@ -17,6 +17,8 @@ def check_availablity(db,party_size,date_time):
 
 def create_booking(db,customer_name,customer_phone,party_size,date_time,table_id):
     booking_time = datetime.fromisoformat(date_time)
+    if booking_time < datetime.now(timezone.utc):
+        return {"status": "error", "message": "That date is in the past. Please choose a future date."}
     new_booking = Booking(customer_name = customer_name,customer_phone = customer_phone,party_size = party_size,table_id = table_id,booking_time = booking_time)
     db.add(new_booking)
     db.commit()
